@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  bind9:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.bind
+    volumes:
+      - ./etc:/etc/bind
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.wordpress
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: examplepassword
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+
+  db:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.db
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: examplepassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: examplepassword
+
+volumes:
+  db_data:

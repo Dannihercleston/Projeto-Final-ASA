@@ -1,0 +1,15 @@
+$TTL 604800
+@    IN    SOA    ns1.ifrn.asa.br. root.ifrn.asa.br. (
+                2         ; Serial (Incrementar esse número a cada atualização)
+           604800         ; Refresh
+            86400         ; Retry
+          2419200         ; Expire
+           604800 )       ; Negative Cache TTL
+;
+
+@    IN    NS     ns1.ifrn.asa.br.         # Servidor de Nomes Primário
+@    IN    MX 10  mail.ifrn.asa.br.        # Servidor de E-mail
+
+ns1  IN    A      10.0.0.9                 # Endereço IP do ns1
+mail IN    A      10.0.0.9                 # Endereço IP do servidor de e-mail
+www  IN    CNAME  ns1                      # Alias www para ns1
